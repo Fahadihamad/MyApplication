@@ -1,9 +1,11 @@
 package com.example.AppSysem.Entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
-
+@Data
 @Entity
 @Inheritance(strategy= InheritanceType.JOINED)
 public class Application {

@@ -6,6 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class JwtUtils {
 
    private Claims getAllClaimsFromToken(String token){
 
-       return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+       return Jwts.parser().setSigningKey(SECRET_KEY.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token).getBody();
    }
 
    public boolean validateToken(String token, UserDetails userDetails){
@@ -56,7 +58,7 @@ public class JwtUtils {
                .setSubject(userDetails.getUsername())
                .setIssuedAt(new Date(System.currentTimeMillis()))
                .setExpiration(new Date(System.currentTimeMillis()+TOKEN_VALIDITY *1000))
-               .signWith(SignatureAlgorithm.HS512,SECRET_KEY)
+               .signWith(SignatureAlgorithm.HS512,SECRET_KEY.getBytes(Charset.forName("UTF-8")))
                .compact()
                ;
 

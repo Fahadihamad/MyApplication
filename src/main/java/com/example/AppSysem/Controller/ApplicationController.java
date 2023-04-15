@@ -22,4 +22,5 @@ public class ApplicationController {
 
         return applicationService.getApplication();
     }
+
 }
