@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginServiceService } from 'src/app/services/login-service.service';
 
 @Component({
   selector: 'app-user-details',
@@ -7,14 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserDetailsComponent implements OnInit {
 
-  user={
-    userName:"fahad",
-    password:"pola"
+  constructor(public login:LoginServiceService){
+
   }
-
-  date= new Date()
-
-  full_name:String="fahad hamad ramadhan"
    
   ngOnInit():void{
 

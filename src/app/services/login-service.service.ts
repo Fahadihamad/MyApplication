@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import baseUrl from './helper';
 
@@ -6,7 +6,10 @@ import baseUrl from './helper';
   providedIn: 'root'
 })
 export class LoginServiceService {
-
+   
+  requestheader = new HttpHeaders({
+    "NO-AUTH":"True"
+  })
   constructor(private http:HttpClient) { }
 
   //current user: which is logged
@@ -19,7 +22,7 @@ export class LoginServiceService {
 
   public generateToken(LoginData:any){
 
-    return this.http.post(`${baseUrl}/authenticate`,LoginData);
+    return this.http.post(`${baseUrl}/authenticate`,LoginData,{headers:this.requestheader});
   }
 
   //login user: set token in local storage
@@ -31,50 +34,76 @@ export class LoginServiceService {
 
    ///isLogin: user is logged or not
 
-   public isLoggedIn(){
-    let tokenStr=localStorage.getItem('token');
+  //  public isLoggedIn(){
+  //   let tokenStr=localStorage.getItem('token');
 
-    if(tokenStr==undefined || tokenStr=="" || tokenStr==null){
+  //   if(tokenStr==undefined || tokenStr=="" || tokenStr==null){
 
-      return false;
-    }else{
-      return true;
-    }
+  //     return false;
+  //   }else{
+  //     return true;
+  //   }
     
-   }
+  //  }
 
-   // logout: remove token from local storage
-   public logout(){
-    localStorage.removeItem('token');
-    localStorage.removeItem('users')
+  //  // logout: remove token from local storage
+  //  public logout(){
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('users')
 
-    return true;
-   }
+  //   return true;
+  //  }
    
-   // get token
-   public getToken(){
-    return localStorage.getItem('token');
-   }
+  //  // get token
+  //  public getToken(){
+  //   return localStorage.getItem('token');
+  //  }
    
    // set userdetails
    public setUser(users: any){
-    localStorage.setItem('users',JSON.stringify(users));
+     return localStorage.setItem('users',JSON.stringify(users));
    }
 
    //gtUsers
    public getUsers(){
-    let userStr = localStorage.getItem("users");
+    let userStr = localStorage.getItem('users');
     if(userStr != null){
       return JSON.parse(userStr);
     }else{
-      this.logout();
+      // this.logout();
       return null;
     }
    }
 
-   //get user roles
-   public getUserRoles(){
-    let users = this.getUsers();
-    return users.role[0].roleName;
-   }
+  //  //get user roles
+  //  public getUserRoles(){
+  //   let users = this.getUsers();
+  //   return users.role[0].roleName;
+  //  }
+
+  public setRoles(roles:[]){
+
+    localStorage.setItem('roles', JSON.stringify(roles));
+
+  }
+  public getRoles(){
+   let str = localStorage.getItem('roles')
+    return JSON.parse(str!);
+  }
+
+  public setToken(jwtToken:any){
+     localStorage.setItem('jwtToken', jwtToken);
+  }
+
+  public getToken():any{
+    return localStorage.getItem('jwtToken')
+  }
+
+  public clear(){
+   return localStorage.clear();
+  }
+
+  public isLoggedIn(){
+    return this.getRoles() && this.getToken();
+  }
 }

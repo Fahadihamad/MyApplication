@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { LoginServiceService } from 'src/app/services/login-service.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
     password:""
   }
 
-  constructor(private snack:MatSnackBar,private login:LoginServiceService){
+  constructor(private snack:MatSnackBar,private login:LoginServiceService,private router:Router){
 
   }
 
@@ -40,18 +41,62 @@ export class LoginComponent implements OnInit {
           console.log(data);
 
           //login
+          this.login.generateToken(this.LoginData).subscribe((response: any) => {
+            console.log(response.jwtToken);
+            console.log(response.users.role)
+            // localStorage.setItem('token', response.jwtToken);
 
-          this.login.loginUser(data.token);
-          this.login.getCurrentUser().subscribe(
-            (users:any)=>{
-              this.login.setUser(users);
-              console.log(users);
+            this.login.setRoles(response.users.role);
+            this.login.setToken(response.jwtToken);
+            this.login.setUser(response.users);
+
+            const role = response.users.role[0].roleName;
+
+            if(role === "Applicant"){
+              this.router.navigate(['/userdashh']);
             }
-          )
+            else if(role === "Admin"){
+              this.router.navigate(['/admindashh']);
+            }
+            else if(role === "Staff"){
+              this.router.navigate(['/stafdashh'])
+            }
+            else if(role === "Sponsors"){
+              this.router.navigate(['/sponsor']);
+            }else{
+              this.router.navigate(['/login']);
+            }
+            // localStorage.setItem('role', response.roleName);
+          })
+          // this.login.loginUser(data.token);
+          // this.login.getCurrentUser().subscribe(
+          //   (user:any)=>{
+          //     this.login.setUser(user);
+          //     console.log(user);
+          //   }
+          // )
+          // if(this.login.getUserRoles()=='Applicant'){
+          //   window.location.href='/userdashh';
+          // }else if(
+          //   this.login.getUserRoles()=='Admin'){
+          //     window.location.href='/admindashh';
+          // }else if(this.login.getUserRoles()=='Sponsors'){
+          //   window.location.href='/spondashh';
+          // }else {  
+          // this.login.getUserRoles()=='Staff'
+          //   window.location.href='/stafdashh';
+          // }else{
+          //   this.login.logout();
+          
+          // }
+          
         },
         (error)=>{
           console.log("error");
           console.log(error);
+          this.snack.open('Invalid details !! try again','',{
+            duration:3000,
+          });
 
         }
       )

@@ -25,6 +25,16 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { HomeComponent } from './pages/home/home.component';
 import { authInterceptorProviders } from './services/auth.interceptor';
+import { AdmindashboardComponent } from './dashboard/admindashboard/admindashboard.component';
+import { SponsordashboardComponent } from './dashboard/sponsordashboard/sponsordashboard.component';
+import { StaffdashboardComponent } from './dashboard/staffdashboard/staffdashboard.component';
+import { Router, RouterModule } from '@angular/router';
+import { UserSidebarComponent } from './sidebar/user-sidebar/user-sidebar.component';
+import { UserHomeComponent } from './pages/user-home/user-home.component';
+import { MasjidReqComponent } from './pages/user-forms/masjid-req/masjid-req.component';
+import { MadrasaReqComponent } from './pages/user-forms/madrasa-req/madrasa-req.component';
+import { AdminSidebarComponent } from './sidebar/admin-sidebar/admin-sidebar.component';
+import { AdminprofileComponent } from './dashboard/admindashboard/adminprofile/adminprofile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +45,16 @@ import { authInterceptorProviders } from './services/auth.interceptor';
     FooterComponent,
     SignupComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    AdmindashboardComponent,
+    SponsordashboardComponent,
+    StaffdashboardComponent,
+    UserSidebarComponent,
+    UserHomeComponent,
+    MasjidReqComponent,
+    MadrasaReqComponent,
+    AdminSidebarComponent,
+    AdminprofileComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +72,9 @@ import { authInterceptorProviders } from './services/auth.interceptor';
     HttpClientModule,
     MatInputModule,
     MatSnackBarModule,
+    RouterModule,
+    MatListModule
+    
     
 
   ],
